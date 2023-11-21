@@ -1,0 +1,88 @@
+I will show final solution followed by my steps for each part.
+
+A.
+initial: [ QD,  9H,  JD,  AD]
+         [ 9H,  QD,  AD,  JD]
+         [ 9H,  AD,  QD,  JD]
+         [ AD,  9H,  QD,  JD]
+		 
+My work: (version 1)
+initial: [2QD, 29H, 2JD, 2AD] the 2 is for the card tpye
+loop 1   [ QD,  9H,  JD,  AD]    
+index 
+1        [ 9H,  QD,    ,    ]
+2        [   ,  QD,  JD,    ]
+3        [   ,    ,  AD,  JD]
+
+loop 2   [ 9H,  QD,  AD,  JD]
+index
+1        [ 9H,  QD,    ,    ]
+2        [   ,  AD,  QD,    ]
+
+loop 3   [ 9H,  AD,  QD,  JD]
+index
+1        [ AD,  9H,  QD,  JD]
+
+
+B.
+initial: [ QD,  9H,  JD,  AD]
+         [ 9H,  QD,  JD,  AD]
+         [ QD,  JD,  9H,  AD]
+         [ QD,  JD,  9H,  AD]
+		 
+My work:  (version 1)
+initial: [2QD, 29H, 2JD, 2AD] the 2 is for the card tpye
+loop 1   [ QD,  9H,  JD,  AD]    
+index 
+1        [ 9H,  QD,    ,    ]
+2        [   ,  QD,  JD,    ]
+3        [   ,    ,  AD,  JD]
+
+loop 2   [ 9H,  QD,  JD,  AD]
+index
+1        [ QD,  9H,    ,    ]
+2        [   ,  JD,  9H,    ]
+
+loop 3   [ QD,  JD,  9H,  AD]
+index
+1        [ QD,  JD,  9H,  AD]
+
+
+
+C.
+initial: [ QD,  9H,  JD,  AD]
+         [ 9H,  JD,  QD,  AD]
+         [ 9H,  JD,  QD,  AD]
+         [ 9H,  JD,  QD,  AD]
+		 
+My work:  (version 2)
+initial: [2QD, 29H, 2JD, 2AD] the 2 is for the card tpye
+loop 1   [ QD,  9H,  JD,  AD]    
+index 
+1        [ 9H,  QD,    ,    ]
+2        [   ,  JD,  QD,    ]
+3        [   ,    ,  QD,  AD]
+
+loop 2   [ 9H,  JD,  QD,  AD]
+index
+1        [ 9H,  JD,    ,    ]
+2        [   ,  JD,  QD,    ]
+
+loop 3   [ 9H,  JD,  QD,  AD]
+index
+1        [ 9H,  JD,  QD,  AD]
+
+
+
+D.
+the orders are different because of:
+    different orders of compare
+        A[i-10] to A[i]
+                vs.
+        A[i] to A[i-10]
+    also because of different rules to 
+    the compare function in card1 vs card2
+
+each compareTo() has different rules, i.e.
+defined differently.  It is critical that
+the programmer applies the compare correctly.	
