@@ -1,16 +1,20 @@
 /**
  * A string list specification. (Implementation of the String List ADT)
  */
+
 import java.util.HashMap; // import the HashMap class
 import java.util.Set; // import the Set class
 import java.util.Iterator; 
 public class SListArray extends SList{
     String[] myArray;
+
     // default constructor
     public SListArray()
     {
 
+
         myArray = new String[8];
+
     }
 
     // Constructor
@@ -18,6 +22,7 @@ public class SListArray extends SList{
     // Creates a list with the strings in elements
     // the ordering and size of this list will be the same as in the elements
     {
+
         SListArray sla = new SListArray();
         int startsize = this.size();
         int elmsize = elements.length;
@@ -39,6 +44,7 @@ public class SListArray extends SList{
                 // initializing all of my array, empty 'spots' to null
                 sla.myArray[i] = null;
             }
+
     }
 
     /**
@@ -51,8 +57,10 @@ public class SListArray extends SList{
      */
     public String get(int position)
     {
+
         
         return myArray[position];
+
     }
 
     /**
@@ -69,8 +77,10 @@ public class SListArray extends SList{
      */
     public String set(int position, String element)
     {
+
         String b = myArray[position];
         myArray[position] = element;
+
         return b;
     }
 
@@ -90,10 +100,12 @@ public class SListArray extends SList{
      */
     public String add(int position, String element)
     {
+
         if(position < 0 || position > this.size())
             return "INDEX_OUT_OF_RANGE";
         myArray[position] = element;
         return "INDEX_OK";
+
     }
 
     /**
@@ -109,12 +121,14 @@ public class SListArray extends SList{
      */
     public String remove(int position)
     {
+
         if(position < 0 || position > this.size())
             return "INDEX_OUT_OF_RANGE";
         if(myArray[position] == null)
             return "INDEX_OUT_OF_RANGE";
         String a = myArray[position];
         myArray[position] = null;
+
         return a;
     }
 
@@ -127,10 +141,12 @@ public class SListArray extends SList{
     public int size()
     {
         int size = 0;
+
         // will use nulls to get size
         for(int i = 0; i < myArray.length ; i++)
             if(myArray[i] != null)
                 size++;
+
         return size;
     }
 
@@ -146,6 +162,7 @@ public class SListArray extends SList{
      * <p>
      *
      * @param anotherSList is the list that we adding to <code>this</code> list.
+
      *                     SListArray
      *                     public void append(SList anotherSList){
      */
@@ -155,6 +172,7 @@ public class SListArray extends SList{
         System.arraycopy(myArray, 0, dumArray, 0, this.size());
         System.arraycopy(anotherSList, 0, dumArray, 0, anotherSList.size());
         myArray = dumArray;
+
         return;
     }
 
@@ -175,6 +193,7 @@ public class SListArray extends SList{
      */
     public SList commonStrings()
     {
+
         HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
         for(int i =0; i<this.size(); i++)
         {
@@ -193,6 +212,7 @@ public class SListArray extends SList{
             if(max < sIterator.next())
                 max = sIterator.getvalue();
         }
+
         SListArray b;
         b = new SListArray();
         return b;
