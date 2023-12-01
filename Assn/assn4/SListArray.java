@@ -23,27 +23,29 @@ public class SListArray extends SList{
     // the ordering and size of this list will be the same as in the elements
     {
 
-        SListArray sla = new SListArray();
-        int startsize = this.size();
+        //SListArray sla = new SListArray();
+        int startsize = 8;
         int elmsize = elements.length;
-        boolean doublelength = false;
+        boolean bdoublelength = false;
         if(elmsize > startsize)
         {
-            sla.myArray = new String[elmsize * 2];
-            doublelength = true;
+            myArray = new String[elmsize * 2];
+
+        }else{
+            myArray = new String[startsize];
         }
         int i=0;
         for( ; i < elmsize; i++)
         {
             // strings are immutable, so no fancy work
-            sla.myArray[i] = elements[i];
+            this.myArray[i] = elements[i];
         }
-        if(doublelength)
-            for( ; i < elmsize * 2; i++)
-            {
-                // initializing all of my array, empty 'spots' to null
-                sla.myArray[i] = null;
-            }
+        //if(bdoublelength)
+        //    for( ; i < elmsize * 2; i++)
+        //    {
+        //        // initializing all of my array, empty 'spots' to null
+        //       sla.myArray[i] = null;
+        //    }
 
     }
 
@@ -58,8 +60,9 @@ public class SListArray extends SList{
     public String get(int position)
     {
 
-        
-        return myArray[position];
+        if(position < 0 || this.size() - 1 < position)
+            return "INDEX_OUT_OF_RANGE";
+        return this.myArray[position];
 
     }
 
@@ -78,8 +81,10 @@ public class SListArray extends SList{
     public String set(int position, String element)
     {
 
+        if(position < 0 || this.size() -1 < position)
+            return "INDEX_OUT_OF_RANGE";
         String b = myArray[position];
-        myArray[position] = element;
+        this.myArray[position] = element;
 
         return b;
     }
@@ -101,9 +106,25 @@ public class SListArray extends SList{
     public String add(int position, String element)
     {
 
-        if(position < 0 || position > this.size())
+        if(position < 0 || position > this.size() )
             return "INDEX_OUT_OF_RANGE";
-        myArray[position] = element;
+
+
+        String[] sNew = new String[this.size() + 1];
+        int i = 0;
+        for( ; i < position; i++ )
+        {
+            sNew[i] = this.myArray[i];
+        }
+        sNew[position] = element;
+        i++;
+        for( ; i < this.size() + 1; i++)
+        {
+            sNew[i] = this.myArray[i-1];
+        }
+
+
+        this.myArray = sNew;
         return "INDEX_OK";
 
     }
@@ -122,12 +143,23 @@ public class SListArray extends SList{
     public String remove(int position)
     {
 
-        if(position < 0 || position > this.size())
+        if(position < 0 || position > this.size() -1)
             return "INDEX_OUT_OF_RANGE";
         if(myArray[position] == null)
             return "INDEX_OUT_OF_RANGE";
         String a = myArray[position];
-        myArray[position] = null;
+        String[] sdum = new String[myArray.length -1];
+        for(int i =0, k = 0; i< myArray.length; i++)
+        {
+            if(i!=position)
+            {
+                sdum[k] = myArray[i];
+                k++;
+            }
+
+        }
+        myArray = new String[myArray.length -1];
+        myArray = sdum;
 
         return a;
     }
@@ -143,7 +175,7 @@ public class SListArray extends SList{
         int size = 0;
 
         // will use nulls to get size
-        for(int i = 0; i < myArray.length ; i++)
+        for(int i = 0; i < this.myArray.length ; i++)
             if(myArray[i] != null)
                 size++;
 
@@ -167,10 +199,18 @@ public class SListArray extends SList{
      *                     public void append(SList anotherSList){
      */
     public void append(SList anotherSList){
+        if(anotherSList.size() < 1)
+            return;
+        if(this.size() < 1)
+        {
+            this.myArray = ((SListArray) anotherSList).myArray;
+            return;
+        }
         int size = 2 * (this.size() + anotherSList.size());
         String[] dumArray = new String[size];
-        System.arraycopy(myArray, 0, dumArray, 0, this.size());
-        System.arraycopy(anotherSList, 0, dumArray, 0, anotherSList.size());
+        System.arraycopy(this.myArray, 0, dumArray, 0, this.myArray.length);
+        System.arraycopy(((SListArray) anotherSList).myArray, 0, dumArray, this.size()  , ((SListArray) anotherSList).size());
+        //System.arraycopy(anotherSList, 0, dumArray, 0, anotherSList.size());
         myArray = dumArray;
 
         return;
@@ -201,31 +241,43 @@ public class SListArray extends SList{
             {
                 dictionary.put(myArray[i], 1);
                 continue;
+            } else if (dictionary.containsKey(myArray[i])) {
+                dictionary.replace(myArray[i], dictionary.get(myArray[i]) + 1);
             }
-            dictionary.replace(myArray[i], dictionary.get(myArray[i] + 1));
+
         }
         //Set<HashMap.Entry<String,Integer>> s = dictionary.entrySet();
-        Iterator<HashMap.Entry<String,Integer>> sIterator = dictionary.entrySet().iterator();
+        //Iterator<HashMap.Entry<String,Integer>> sIterator = dictionary.entrySet().iterator();
         int max = 0;
         // source https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
-        while(sIterator.hasNext())
+        for(int i : dictionary.values())
         {
-            HashMap.Entry<String, Integer> pair = sIterator.next();
-            if(max < pair.getValue())
-                max = pair.getValue();
+         //   HashMap.Entry<String, Integer> pair = sIterator.next();
+            if(max < i)
+            {
+                max = i;
+            }
+
+        }
+
+       // SListArray b;
+       // b = new SListArray();
+
+
+       // Iterator<HashMap.Entry<String,Integer>> sIterator2 = dictionary.entrySet().iterator();
+        int iter = 0;
+        String[] sOut = new String[myArray.length];
+        for(String s : dictionary.keySet())
+        {
+            if(max == dictionary.get(s))
+            {
+                sOut[iter] = s;
+                iter++;
+            }
         }
 
         SListArray b;
-        b = new SListArray();
-        int iter = 0;
-        while(sIterator.hasNext())
-        {
-            HashMap.Entry<String, Integer> pair = sIterator.next();
-            if(max == pair.getValue())
-            {
-                b.add(iter, pair.getKey());
-            }
-        }
+        b = new SListArray(sOut);
 
         return b;
     }
@@ -252,15 +304,54 @@ public class SListArray extends SList{
      */
     public SListArray[] commonStrings(int n)
     {
+
         SListArray[] a;
-        a = new SListArray[3];
+        a = new SListArray[n];
+        //System.out.println("Hello, World! 1");
+        if(n < 1 ) return a; // do nothing, produce empty SListArray
+
+        //System.out.println("Hello, World! 2");
+        SListArray dum = new SListArray(this.myArray);
+        for(int i = 0; i < n  ; i++)
+        {
+            //System.out.println("Hello, World! i = " + String.valueOf(i));
+            a[i] = (SListArray) dum.commonStrings() ;
+            for(int j=0; j < a[i].size(); j++)
+            {
+                //System.out.println("Hello, World! j = " + String.valueOf(j));
+                //a[i] = (SListArray) dum.commonStrings() ;
+                for(int k=0; k < dum.size(); k++)
+                {
+                    System.out.println("Hello, World! k = " + String.valueOf(k));
+                    if(a[i].get(j) == dum.get(k)) {
+                        //System.out.println("matching to remove " + a[i].get(j));
+                        dum.remove(k);
+                    }
+                }
+
+
+            }
+            System.out.println(a[i].toString());
+        }
         return a;
+        
     }
 
 
     @Override
-    public String toString(){
-        return "toString(): YOU NEED TO OVERRIDE THIS IN YOUR SListArray CLASS";
+    public String toString() {
+        String sPrint = "";
+        for(int i = 0; i < this.size(); i++)
+        {
+            if(i==0)
+                sPrint += "[" + this.get(i);
+            else if (i!=0) {
+                sPrint += ", " + this.get(i);
+            }
+
+        }
+        sPrint += "]";
+        return sPrint;
     }
 
     
