@@ -204,17 +204,29 @@ public class SListArray extends SList{
             }
             dictionary.replace(myArray[i], dictionary.get(myArray[i] + 1));
         }
-        Set<HashMap.Entry<String,Integer>> s = dictionary.entrySet();
-        Iterator<HashMap.Entry<String,Integer>> sIterator = s.iterator();
+        //Set<HashMap.Entry<String,Integer>> s = dictionary.entrySet();
+        Iterator<HashMap.Entry<String,Integer>> sIterator = dictionary.entrySet().iterator();
         int max = 0;
+        // source https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
         while(sIterator.hasNext())
         {
-            if(max < sIterator.next())
-                max = sIterator.getvalue();
+            HashMap.Entry<String, Integer> pair = sIterator.next();
+            if(max < pair.getValue())
+                max = pair.getValue();
         }
 
         SListArray b;
         b = new SListArray();
+        int iter = 0;
+        while(sIterator.hasNext())
+        {
+            HashMap.Entry<String, Integer> pair = sIterator.next();
+            if(max == pair.getValue())
+            {
+                b.add(iter, pair.getKey());
+            }
+        }
+
         return b;
     }
 
